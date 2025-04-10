@@ -1,26 +1,31 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import RoomList from "./pages/RoomList";  // Trang danh sách phòng
-import RoomDetails from "./pages/RoomDetails";  // Trang chi tiết phòng
-import Navbar from "./components/Navbar";  // Component Navbar
-import Footer from "./components/Footer";  // Component Footer
-import { Login } from './pages/Login';  // Trang đăng nhập (named export)
-import { Register } from './pages/Register';  // Trang đăng ký (named export)
+import RoomList from "./pages/RoomList";
+import RoomDetails from "./pages/RoomDetails";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import { Login } from './pages/Login';
+import { Register } from './pages/Register';
+import ForgotPassword from "./pages/ForgotPassword";
+import { AuthProvider } from './context/AuthContext'; // ✅ THÊM DÒNG NÀY
 
 function App() {
   return (
-    <Router>
-      <Navbar /> {/* Navbar sẽ xuất hiện ở tất cả các trang */}
-      <div className="min-h-screen flex flex-col">
-        <Routes>
-          <Route path="/" element={<RoomList />} /> {/* Trang danh sách phòng */}
-          <Route path="/rooms/:id" element={<RoomDetails />} /> {/* Trang chi tiết phòng */}
-          <Route path="/login" element={<Login />} /> {/* Trang đăng nhập */}
-          <Route path="/register" element={<Register />} /> {/* Trang đăng ký */}
-        </Routes>
-      </div>
-      <Footer /> {/* Footer sẽ luôn ở dưới */}
-    </Router>
+    <AuthProvider> {/* ✅ BỌC TOÀN BỘ APP */}
+      <Router>
+        <Navbar />
+        <div className="min-h-screen flex flex-col">
+          <Routes>
+            <Route path="/" element={<RoomList />} />
+            <Route path="/rooms/:id" element={<RoomDetails />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </div>
+        <Footer />
+      </Router>
+    </AuthProvider>
   );
 }
 

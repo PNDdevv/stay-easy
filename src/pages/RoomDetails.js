@@ -12,7 +12,7 @@ export default function RoomDetails() {
   return (
     <div className="container mx-auto p-4">
       {/* Nút quay lại */}
-      <div className="flex items-center mb-4">
+      <div className="flex items-center mb-6">
         <button
           onClick={handleGoBack}
           className="flex items-center text-blue-500 hover:text-blue-600"
@@ -23,8 +23,8 @@ export default function RoomDetails() {
       </div>
       
       {/* Nội dung chi tiết phòng */}
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold mb-4">Phòng trọ Quận 1</h2>
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-semibold mb-4">Phòng trọ Quận 1</h2>
         <img
           src="https://source.unsplash.com/800x600/?room"
           alt="Room"
@@ -34,7 +34,7 @@ export default function RoomDetails() {
         <p className="mt-4 text-gray-600">
           Phòng trọ rộng rãi, thoáng mát, đầy đủ tiện nghi, phù hợp cho sinh viên và người đi làm.
         </p>
-        <button className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        <button className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300 ease-in-out">
           Liên hệ
         </button>
       </div>

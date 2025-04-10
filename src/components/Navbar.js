@@ -48,7 +48,7 @@ export default function Navbar() {
   return (
     <>
       {/* Navbar */}
-      <nav className="bg-blue-600 p-4 shadow-md">
+      <nav className="bg-blue-600 p-4 shadow-md fixed w-full top-0 left-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="text-white font-bold text-2xl">
@@ -103,7 +103,7 @@ export default function Navbar() {
       </nav>
 
       {/* Bộ lọc sát bên trái */}
-      <div className="max-w-7xl mx-auto flex mt-2">
+      <div className="max-w-7xl mx-auto flex mt-16">  {/* Thêm margin-top để tránh che phủ nội dung */}
         <FilterBar filters={filters} setFilters={setFilters} />
       </div>
 

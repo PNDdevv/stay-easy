@@ -1,74 +1,84 @@
-require('dotenv').config(); // Load biến môi trường từ .env
+require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const { Server } = require('socket.io');
 const OpenAI = require('openai');
-const mongoose = require('mongoose');
 
+// Khởi tạo app & server
 const app = express();
 const server = http.createServer(app);
+
+// Khởi tạo socket.io
 const io = new Server(server, {
   cors: {
-    origin: "*", // Cho phép tất cả domain, có thể thay đổi nếu cần
-    methods: ["GET", "POST"]
+    origin: '*', // Có thể thay bằng http://localhost:3000 nếu chỉ cho frontend local
+    methods: ['GET', 'POST'],
+  },
+});
+
+// Kiểm tra biến môi trường
+const REQUIRED_ENV_VARS = ['OPENAI_API_KEY', 'JWT_SECRET', 'MONGO_URI'];
+REQUIRED_ENV_VARS.forEach((key) => {
+  if (!process.env[key]) {
+    console.error(`❌ Thiếu biến môi trường: ${key}`);
+    process.exit(1);
   }
 });
 
-// Khởi tạo OpenAI
+// Kết nối MongoDB
+mongoose
+  .connect(process.env.MONGO_URI)  .then(() => console.log('✅ Đã kết nối MongoDB'))
+  .catch((err) => {
+    console.error('❌ Lỗi kết nối MongoDB:', err.message);
+    process.exit(1);
+  });
+
+// Cấu hình OpenAI
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY // Lấy API Key từ .env
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Kiểm tra API Key khi khởi động server
-if (!process.env.OPENAI_API_KEY) {
-  console.error("❌ ERROR: OPENAI_API_KEY is missing in .env file!");
-  process.exit(1); // Dừng server nếu thiếu API Key
-}
-
-// Kết nối MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.log("❌ MongoDB connection error:", err));
-
-// Middlewares
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// WebSocket kết nối
-io.on('connection', (socket) => {
-  console.log(`✅ User connected: ${socket.id}`);
+// Routes
+const roomRoutes = require('./routes/rooms');
+const authRoutes = require('./routes/auth.routes');
+app.use('/api/rooms', roomRoutes);
+app.use('/api/auth', authRoutes);
 
-  // Khi nhận tin nhắn từ client
-  socket.on('message', async (data) => {
-    console.log("📩 User message:", data.message);
-    
+// WebSocket – Chat AI realtime
+io.on('connection', (socket) => {
+  console.log(`🟢 Kết nối mới: ${socket.id}`);
+
+  socket.on('message', async ({ message }) => {
+    console.log(`📩 [${socket.id}] User: ${message}`);
+
     try {
-      // Gửi tin nhắn đến OpenAI
-      const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: data.message }], // Dữ liệu tin nhắn gửi đến OpenAI
+      const aiResponse = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: message }],
       });
 
-      const botReply = response.choices[0]?.message?.content || "Xin lỗi, tôi chưa hiểu yêu cầu của bạn.";
-      console.log("🤖 AI reply:", botReply);
-
-      // Gửi lại tin nhắn từ AI về cho client
-      socket.emit('bot-message', { message: botReply });
-    } catch (error) {
-      console.error("❌ Error with OpenAI API:", error.message);
-      socket.emit('bot-message', { message: "Lỗi khi kết nối AI, vui lòng thử lại sau." });
+      const botMessage = aiResponse.choices[0]?.message?.content || 'Xin lỗi, tôi không hiểu yêu cầu.';
+      socket.emit('bot-message', { message: botMessage });
+      console.log(`🤖 AI: ${botMessage}`);
+    } catch (err) {
+      console.error('❌ Lỗi gọi OpenAI:', err.message);
+      socket.emit('bot-message', { message: '⚠️ Lỗi khi kết nối AI. Vui lòng thử lại sau.' });
     }
   });
 
-  // Khi user ngắt kết nối
   socket.on('disconnect', () => {
-    console.log(`❌ User disconnected: ${socket.id}`);
+    console.log(`🔴 Ngắt kết nối: ${socket.id}`);
   });
 });
 
-// Khởi động server
+// Start server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
+  console.log(`🚀 Server đang chạy tại: http://localhost:${PORT}`);
 });

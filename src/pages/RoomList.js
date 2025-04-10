@@ -1,37 +1,35 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function RoomList() {
   const rooms = [
-    { id: 1, title: "Phòng trọ Quận 1", price: "3.5 triệu/tháng", rating: "⭐ 4.5", location: "Hồ Chí Minh", img: "https://source.unsplash.com/300x200/?room" },
-    { id: 2, title: "Căn hộ mini Bình Thạnh", price: "4.8 triệu/tháng", rating: "⭐ 4.8", location: "Hồ Chí Minh", img: "https://source.unsplash.com/300x200/?apartment" },
-    { id: 3, title: "Phòng trọ giá rẻ Gò Vấp", price: "2.7 triệu/tháng", rating: "⭐ 4.3", location: "Hồ Chí Minh", img: "https://source.unsplash.com/300x200/?hostel" },
-    { id: 4, title: "Phòng trọ Quận 3", price: "3 triệu/tháng", rating: "⭐ 4.0", location: "Hồ Chí Minh", img: "https://source.unsplash.com/300x200/?room" },
-    { id: 5, title: "Phòng trọ Quận 5", price: "4.2 triệu/tháng", rating: "⭐ 4.6", location: "Hồ Chí Minh", img: "https://source.unsplash.com/300x200/?apartment" },
-    { id: 6, title: "Căn hộ mini Quận 7", price: "5 triệu/tháng", rating: "⭐ 4.7", location: "Hồ Chí Minh", img: "https://source.unsplash.com/300x200/?studio" },
-    { id: 7, title: "Phòng trọ Quận 4", price: "3.8 triệu/tháng", rating: "⭐ 4.5", location: "Hồ Chí Minh", img: "https://source.unsplash.com/300x200/?room" },
-    { id: 8, title: "Căn hộ Quận 2", price: "6 triệu/tháng", rating: "⭐ 4.7", location: "Hồ Chí Minh", img: "https://source.unsplash.com/300x200/?apartment" },
-    { id: 9, title: "Phòng trọ Gò Vấp", price: "2.5 triệu/tháng", rating: "⭐ 4.0", location: "Hồ Chí Minh", img: "https://source.unsplash.com/300x200/?hostel" },
-    { id: 10, title: "Phòng trọ Quận 10", price: "3 triệu/tháng", rating: "⭐ 4.3", location: "Hồ Chí Minh", img: "https://source.unsplash.com/300x200/?room" },
-    
-    // Thêm phòng trọ ở Hà Nội
-    { id: 11, title: "Phòng trọ Quận Hoàn Kiếm", price: "4.5 triệu/tháng", rating: "⭐ 4.7", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?room" },
-    { id: 12, title: "Căn hộ mini Đống Đa", price: "5 triệu/tháng", rating: "⭐ 4.8", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?apartment" },
-    { id: 13, title: "Phòng trọ giá rẻ Ba Đình", price: "3.2 triệu/tháng", rating: "⭐ 4.3", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?hostel" },
-    { id: 14, title: "Phòng trọ Tây Hồ", price: "4.3 triệu/tháng", rating: "⭐ 4.6", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?room" },
-    { id: 15, title: "Căn hộ Quận Hai Bà Trưng", price: "6 triệu/tháng", rating: "⭐ 4.9", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?studio" },
-    { id: 16, title: "Phòng trọ Cầu Giấy", price: "3.7 triệu/tháng", rating: "⭐ 4.4", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?room" },
-    { id: 17, title: "Phòng trọ Hà Đông", price: "2.9 triệu/tháng", rating: "⭐ 4.2", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?hostel" },
-    { id: 18, title: "Căn hộ mini Thanh Xuân", price: "5.2 triệu/tháng", rating: "⭐ 4.6", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?apartment" },
-    { id: 19, title: "Phòng trọ Long Biên", price: "3.1 triệu/tháng", rating: "⭐ 4.5", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?room" },
-    { id: 20, title: "Phòng trọ Ba Đình", price: "3.8 triệu/tháng", rating: "⭐ 4.3", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?hostel" },
-  
-    // Phòng trọ các quận khác ở Hà Nội
-    { id: 21, title: "Phòng trọ Hoàng Mai", price: "3.3 triệu/tháng", rating: "⭐ 4.1", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?room" },
-    { id: 22, title: "Căn hộ Quận Bắc Từ Liêm", price: "5.6 triệu/tháng", rating: "⭐ 4.7", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?apartment" },
-    { id: 23, title: "Phòng trọ Nam Từ Liêm", price: "4 triệu/tháng", rating: "⭐ 4.4", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?hostel" },
-    { id: 24, title: "Phòng trọ Hà Nội - Kim Mã", price: "5 triệu/tháng", rating: "⭐ 4.8", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?room" },
-    { id: 25, title: "Căn hộ mini Hai Bà Trưng", price: "6 triệu/tháng", rating: "⭐ 4.9", location: "Hà Nội", img: "https://source.unsplash.com/300x200/?studio" },
+    // Hồ Chí Minh
+    { id: 1, title: "Phòng trọ Quận 1", price: "3.5 triệu/tháng", location: "Hồ Chí Minh", area: "20m²", status: "Còn phòng", amenities: ["Điều hòa", "Máy giặt", "Wifi miễn phí"], img: "/assets/images/OIP (1).jpg" },
+    { id: 2, title: "Căn hộ mini Bình Thạnh", price: "4.8 triệu/tháng", location: "Hồ Chí Minh", area: "25m²", status: "Sắp hết phòng", amenities: ["Ban công", "Nội thất đầy đủ", "Chỗ để xe"], img: "/assets/images/OIP (2).jpg" },
+    { id: 3, title: "Phòng trọ giá rẻ Gò Vấp", price: "2.7 triệu/tháng", location: "Hồ Chí Minh", area: "18m²", status: "Còn phòng", amenities: ["Nhà bếp", "Giờ giấc tự do"], img: "/assets/images/OIP (3).jpg" },
+    { id: 4, title: "Phòng trọ Quận 3", price: "3 triệu/tháng", location: "Hồ Chí Minh", area: "22m²", status: "Hết phòng", amenities: ["Nước nóng lạnh", "Bảo vệ 24/7"], img: "/assets/images/OIP (4).jpg" },
+    { id: 5, title: "Phòng trọ Quận 5", price: "4.2 triệu/tháng", location: "Hồ Chí Minh", area: "24m²", status: "Còn phòng", amenities: ["Wifi miễn phí", "Gần chợ", "Chỗ để xe"], img: "/assets/images/OIP (5).jpg" },
+    { id: 6, title: "Căn hộ mini Quận 7", price: "5 triệu/tháng", location: "Hồ Chí Minh", area: "28m²", status: "Còn phòng", amenities: ["Thang máy", "Gần siêu thị", "Ban công"], img: "/assets/images/OIP (6).jpg" },
+
+    // Hà Nội
+    { id: 7, title: "Phòng trọ Quận Hoàn Kiếm", price: "4.5 triệu/tháng", location: "Hà Nội", area: "22m²", status: "Còn phòng", amenities: ["Điều hòa", "Ban công"], img: "/assets/images/OIP (7).jpg" },
+    { id: 8, title: "Căn hộ mini Đống Đa", price: "5 triệu/tháng", location: "Hà Nội", area: "27m²", status: "Sắp hết phòng", amenities: ["Thang máy", "Gần siêu thị"], img: "/assets/images/OIP (8).jpg" },
+    { id: 9, title: "Phòng trọ giá rẻ Ba Đình", price: "3.2 triệu/tháng", location: "Hà Nội", area: "20m²", status: "Hết phòng", amenities: ["Nội thất cơ bản", "Wifi miễn phí"], img: "/assets/images/OIP (9).jpg" },
+    { id: 10, title: "Phòng trọ Tây Hồ", price: "4.3 triệu/tháng", location: "Hà Nội", area: "23m²", status: "Còn phòng", amenities: ["Bếp riêng", "Chỗ để xe"], img: "/assets/images/OIP (10).jpg" },
+    { id: 11, title: "Căn hộ Quận Hai Bà Trưng", price: "6 triệu/tháng", location: "Hà Nội", area: "30m²", status: "Sắp hết phòng", amenities: ["Full nội thất", "Gần trường học"], img: "/assets/images/OIP (11).jpg" },
+    { id: 12, title: "Phòng trọ Cầu Giấy", price: "3.7 triệu/tháng", location: "Hà Nội", area: "21m²", status: "Còn phòng", amenities: ["Wifi miễn phí", "Bảo vệ 24/7"], img: "/assets/images/OIP (12).jpg" },
+
+    // Đà Nẵng
+    { id: 13, title: "Phòng trọ Quận Hải Châu", price: "3.0 triệu/tháng", location: "Đà Nẵng", area: "20m²", status: "Còn phòng", amenities: ["Điều hòa", "Máy giặt", "Wifi miễn phí"], img: "/assets/images/OIP (13).jpg" },
+    { id: 14, title: "Căn hộ mini Sơn Trà", price: "4 triệu/tháng", location: "Đà Nẵng", area: "22m²", status: "Còn phòng", amenities: ["Ban công", "Full nội thất"], img: "/assets/images/OIP (14).jpg" },
+    { id: 15, title: "Phòng trọ giá rẻ Liên Chiểu", price: "2.5 triệu/tháng", location: "Đà Nẵng", area: "18m²", status: "Sắp hết phòng", amenities: ["Giờ giấc tự do", "Wifi miễn phí"], img: "/assets/images/OIP (15).jpg" },
+    { id: 16, title: "Phòng trọ An Hải Bắc", price: "3.5 triệu/tháng", location: "Đà Nẵng", area: "25m²", status: "Còn phòng", amenities: ["Nội thất đầy đủ", "Máy lạnh"], img: "/assets/images/OIP (16).jpg" },
+    { id: 17, title: "Căn hộ mini Ngũ Hành Sơn", price: "5 triệu/tháng", location: "Đà Nẵng", area: "30m²", status: "Còn phòng", amenities: ["Gần biển", "Thang máy"], img: "/assets/images/OIP (17).jpg" },
+
+    // Nha Trang
+    { id: 18, title: "Phòng trọ Khánh Hòa", price: "2.8 triệu/tháng", location: "Nha Trang", area: "20m²", status: "Còn phòng", amenities: ["Wifi miễn phí", "Điều hòa"], img: "/assets/images/OIP (18).jpg" },
+    { id: 19, title: "Căn hộ mini Vĩnh Hải", price: "3.9 triệu/tháng", location: "Nha Trang", area: "24m²", status: "Còn phòng", amenities: ["Máy giặt", "Ban công"], img: "/assets/images/OIP (19).jpg" },
+    { id: 20, title: "Phòng trọ giá rẻ Nha Trang", price: "2.3 triệu/tháng", location: "Nha Trang", area: "18m²", status: "Sắp hết phòng", amenities: ["Nhà bếp", "Gần trường học"], img: "/assets/images/OIP (20).jpg" }
   ];
 
   const [filters, setFilters] = useState({
@@ -54,9 +52,9 @@ export default function RoomList() {
       (filters.district ? room.title.includes(filters.district) : true) &&
       (filters.ward ? room.title.includes(filters.ward) : true) &&
       (filters.price ? room.price.includes(filters.price) : true) &&
-      (filters.area ? room.title.includes(filters.area) : true) &&
-      (filters.status ? room.title.includes(filters.status) : true) &&
-      (filters.furniture ? room.title.includes(filters.furniture) : true)
+      (filters.area ? room.area.includes(filters.area) : true) &&
+      (filters.status ? room.status.includes(filters.status) : true) &&
+      (filters.furniture ? room.furniture.includes(filters.furniture) : true)
     );
   });
 
@@ -101,7 +99,28 @@ export default function RoomList() {
           <option value="Phường 1">Phường 1</option>
           {/* Thêm các xã/phường */}
         </select>
-        {/* Các bộ lọc khác như giá, diện tích, v.v. */}
+        <select name="price" onChange={handleFilterChange} value={filters.price}>
+          <option value="">Chọn giá</option>
+          <option value="3 triệu">3 triệu</option>
+          <option value="4 triệu">4 triệu</option>
+          {/* Thêm các mức giá khác */}
+        </select>
+        <select name="area" onChange={handleFilterChange} value={filters.area}>
+          <option value="">Chọn diện tích</option>
+          <option value="20m²">20m²</option>
+          <option value="30m²">30m²</option>
+          {/* Thêm các diện tích khác */}
+        </select>
+        <select name="status" onChange={handleFilterChange} value={filters.status}>
+          <option value="">Chọn tình trạng</option>
+          <option value="Có sẵn">Có sẵn</option>
+          <option value="Đang cho thuê">Đang cho thuê</option>
+        </select>
+        <select name="furniture" onChange={handleFilterChange} value={filters.furniture}>
+          <option value="">Chọn nội thất</option>
+          <option value="Đầy đủ">Đầy đủ</option>
+          <option value="Không có">Không có</option>
+        </select>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
