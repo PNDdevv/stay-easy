@@ -7,7 +7,9 @@ import Footer from "./components/Footer";
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import ForgotPassword from "./pages/ForgotPassword";
-import { AuthProvider } from './context/AuthContext'; // ✅ THÊM DÒNG NÀY
+import { AuthProvider } from './context/AuthContext';
+import PostAd from "./pages/PostAd";
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/post-ad" element={<PostAd />} />
           </Routes>
         </div>
         <Footer />

@@ -9,9 +9,20 @@ export const register = async (userData) => {
     const response = await axios.post(`${API_URL}/register`, userData);
     return response.data; // Trả về dữ liệu từ server
   } catch (error) {
-    // Nếu có lỗi, ném lỗi ra ngoài để xử lý ở nơi gọi
-    console.error(error.response ? error.response.data.message : error);
-    throw new Error(error.response ? error.response.data.message : 'Lỗi đăng ký');
+    // Xử lý lỗi với thông báo chi tiết
+    if (error.response) {
+      // Nếu có phản hồi từ server (ví dụ: 400, 500)
+      console.error('Lỗi từ server:', error.response.data.message);
+      throw new Error(error.response.data.message); // Ném lỗi ra ngoài
+    } else if (error.request) {
+      // Nếu không có phản hồi từ server
+      console.error('Không nhận được phản hồi từ server:', error.request);
+      throw new Error('Không thể kết nối với server, vui lòng thử lại');
+    } else {
+      // Nếu có lỗi xảy ra khi thiết lập yêu cầu
+      console.error('Lỗi xảy ra khi thiết lập yêu cầu:', error.message);
+      throw new Error('Đã có lỗi xảy ra, vui lòng thử lại');
+    }
   }
 };
 
@@ -21,8 +32,19 @@ export const login = async (userData) => {
     const response = await axios.post(`${API_URL}/login`, userData);
     return response.data; // Trả về dữ liệu từ server
   } catch (error) {
-    // Nếu có lỗi, ném lỗi ra ngoài để xử lý ở nơi gọi
-    console.error(error.response ? error.response.data.message : error);
-    throw new Error(error.response ? error.response.data.message : 'Lỗi đăng nhập');
+    // Xử lý lỗi với thông báo chi tiết
+    if (error.response) {
+      // Nếu có phản hồi từ server (ví dụ: 400, 500)
+      console.error('Lỗi từ server:', error.response.data.message);
+      throw new Error(error.response.data.message); // Ném lỗi ra ngoài
+    } else if (error.request) {
+      // Nếu không có phản hồi từ server
+      console.error('Không nhận được phản hồi từ server:', error.request);
+      throw new Error('Không thể kết nối với server, vui lòng thử lại');
+    } else {
+      // Nếu có lỗi xảy ra khi thiết lập yêu cầu
+      console.error('Lỗi xảy ra khi thiết lập yêu cầu:', error.message);
+      throw new Error('Đã có lỗi xảy ra, vui lòng thử lại');
+    }
   }
 };

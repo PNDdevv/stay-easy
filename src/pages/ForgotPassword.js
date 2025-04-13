@@ -60,6 +60,7 @@ function ForgotPassword() {
             Gửi yêu cầu
           </button>
         </form>
+        
       </div>
     </div>
   );
